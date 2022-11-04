@@ -11,7 +11,7 @@
 int main() {
 
     int matrix[10][10];
-    const char* filename = "C:\\Users\\Pichau\\Documents\\tp2\\entrada_I.txt";
+    const char* filename = "/Users/saulovictor/Desktop/UFV/2022-02/AEDS-1/AEDS-TP2/entrada_I.txt";
     char *pt;
 
 
@@ -20,6 +20,7 @@ int main() {
     stat(filename, &sb);
 
 
+    int m = 0;
     char *file_contents = malloc(sb.st_size);
     while (fscanf(in_file, "%[^\n] ", file_contents) != EOF) {
         pt = strtok(file_contents, " ");
@@ -27,15 +28,35 @@ int main() {
         while(pt){
             pt = strtok(NULL, " ");
             if(pt != NULL){
-                printf("%s",pt);
+                //printf("%s",pt);
+
+                int x;
+                sscanf(pt, "%d", &x);
+                printf("%d", x);
+
+                for(int k = 0; k < 10; k++){
+                    if (m==k){
+                        matrix[m][k] = -1;
+                    }else if (k==x){
+                        matrix[m][k] = x;
+                    }else {
+                        matrix[m][k] = 0;
+                    }
+                }
+
             }
         }
-        for(i = 0; i < 10; i++){
 
-        }
+        m++;
         printf("\n");
     }
 
+    for (int j = 0; j < 10; ++j) {
+        for (int l = 0; l < 10; ++l) {
+            printf("%d ", matrix[j][l]);
+        }
+        printf("\n");
+    }
 
     fclose(in_file);
     /* Nosso número na base n. Ele é um vetor
