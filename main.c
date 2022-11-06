@@ -2,18 +2,25 @@
 #include <string.h>
 #include <stdlib.h>
 #include <sys/stat.h>
+#include <time.h>
 
 /* Tamanho máximo da string de entrada. */
 #define MAX 250
-
-
+#define TAM 20
 
 int main() {
 
-    int matrix[10][10];
-    const char* filename = "/Users/saulovictor/Desktop/UFV/2022-02/AEDS-1/AEDS-TP2/entrada_I.txt";
+    int matrix[TAM][TAM] ;
+    const char* filename = "/Users/saulovictor/Desktop/UFV/2022-02/AEDS-1/AEDS-TP2/entrada_3.txt";
     char *pt;
+    double time_spent = 0.0;
 
+
+    for (int i = 0; i < TAM; ++i) {
+        for (int j = 0; j < TAM; ++j) {
+            matrix[i][j] = 0;
+        }
+    }
 
     FILE *in_file = fopen(filename, "r");
     struct stat sb;
@@ -34,25 +41,22 @@ int main() {
                 sscanf(pt, "%d", &x);
                 printf("%d", x);
 
-                for(int k = 0; k < 10; k++){
+                for(int k = 0; k < TAM; k++){
                     if (m==k){
                         matrix[m][k] = -1;
                     }else if (k==x){
-                        matrix[m][k] = x;
-                    }else {
-                        matrix[m][k] = 0;
+                        matrix[m][k] = 1;
                     }
                 }
 
             }
         }
-
         m++;
         printf("\n");
     }
 
-    for (int j = 0; j < 10; ++j) {
-        for (int l = 0; l < 10; ++l) {
+    for (int j = 0; j < TAM; ++j) {
+        for (int l = 0; l < TAM; ++l) {
             printf("%d ", matrix[j][l]);
         }
         printf("\n");
@@ -105,6 +109,7 @@ int main() {
 
     /* Termina quando a última posição do vetor
      * for 1. */
+    clock_t begin = clock();
     while ( num[r] == 0 ) {
         for ( i = 0; i < n; i++ ) {
             /* processo de mapeamento. */
@@ -116,8 +121,24 @@ int main() {
             str[r] = 0 ;
             if(str[0] != str[1]){
                 printf("%s\n", str);
+                int contante = 0;
+                for (int l = 0; l < TAM; ++l) {
+                    for (int z = 0; z < TAM; ++z) {
+                        if (matrix[l][z] == 1){
+                            if(str[l] == str[z]){
+                                contante++;
+                            }
+                        }
+                    }
+                    if (contante>0){
+                        break;
+                    }
+                    printf("\n");
+                }
+                if (contante == 0){
+                    printf("solucao encontrada");
+                }
             }
-
             /* incrementa o algarismo menos significativo. */
             num[0]++ ;
         }
@@ -130,6 +151,25 @@ int main() {
             }
         }
     }
+    clock_t end = clock();
+
+    time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
+
+    printf("time elapsed %f", time_spent);
 
     return 0 ;
 }
+
+
+/*
+    for (int l = 0; l < TAM; ++l) {
+        for (int c = 0; c < TAM; ++c) {
+            if (matrix[l][c] == 1){
+                int compare = strcmp(&str[0], &str[c]);
+                if (compare == 1){
+                    printf("deu ruim");
+                }
+            }
+        }
+    }
+*/
